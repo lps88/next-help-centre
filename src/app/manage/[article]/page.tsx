@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import markdownToHtml from '@/lib/markdownToHtml';
 import { getAllArticles, getArticleContent } from '@/lib/api';
 
+const level = 2;
+
 export default async function Article({ params }: Params) {
   const post = getArticleContent('src/manage', params.article);
 
@@ -10,7 +12,7 @@ export default async function Article({ params }: Params) {
     return notFound();
   }
 
-  const content = await markdownToHtml(post.content || '');
+  const { htmlString: content, headings } = await markdownToHtml(post.content || '');
 
   return (
     <div>
@@ -26,15 +28,19 @@ export default async function Article({ params }: Params) {
                     <h2 className="article-section-nav__title">{post.title}</h2>
                     <nav>
                       <ol className="article-section-nav__list">
-                        {/* {%- for heading in collections.articles[page.url].headings-%}
-                                              {%- if heading.level <= level -%}
-                                                  <li>
-                                                      <a href="#{{ heading.fragment }}" aria-label="Scroll to '{{heading.title}}'" title="Scroll to '{{heading.title}}'">
-                                                          {{ heading.title }}
-                                                      </a>
-                                                  </li>
-                                              {%- endif -%}
-                                          {%- endfor -%} */}
+                        {headings
+                          .filter(({ depth }) => depth <= level)
+                          .map(({ value: headingTitle, data: { id } }) => (
+                            <li key={id}>
+                              <a
+                                href={'#' + id}
+                                aria-label={'Scroll to ' + headingTitle}
+                                title={'Scroll to ' + headingTitle}
+                              >
+                                {headingTitle}
+                              </a>
+                            </li>
+                          ))}
                       </ol>
                     </nav>
                   </div>
