@@ -1,7 +1,7 @@
-import 'nhsuk-frontend/dist/nhsuk.css';
 import { notFound } from 'next/navigation';
 import markdownToHtml from '@/lib/markdownToHtml';
 import { getAllArticles, getArticleContent } from '@/lib/api';
+import ArticleNavList from './nav-list';
 
 const level = 2;
 
@@ -15,49 +15,34 @@ export default async function Article({ params }: Params) {
   const { htmlString: content, headings } = await markdownToHtml(post.content || '');
 
   return (
-    <div>
+    <div className="nhsuk-width-container">
       {/* {% include "header.njk" %} */}
-      <div className="nhsuk-width-container ">
-        <main className="nhsuk-main-wrapper " id="maincontent" role="main">
-          <div className="nhsuk-width-container">
-            {/* {% include "breadcrumbs.njk" %} */}
-            <div className="nhsuk-grid-row">
-              <div className="nhsuk-grid-column-one-third sticky-nav">
-                <div className="article-section-nav-wrapper">
-                  <div className="article-section-nav">
-                    <h2 className="article-section-nav__title">{post.title}</h2>
-                    <nav>
-                      <ol className="article-section-nav__list">
-                        {headings
-                          .filter(({ depth }) => depth <= level)
-                          .map(({ value: headingTitle,  id  }) => (
-                            <li key={id}>
-                              <a
-                                href={'#' + id}
-                                aria-label={'Scroll to ' + headingTitle}
-                                title={'Scroll to ' + headingTitle}
-                              >
-                                {headingTitle}
-                              </a>
-                            </li>
-                          ))}
-                      </ol>
-                    </nav>
-                  </div>
+      <main className="nhsuk-main-wrapper " id="maincontent" role="main">
+        <div className="nhsuk-width-container">
+          {/* {% include "breadcrumbs.njk" %} */}
+          <div className="nhsuk-grid-row">
+            <div className="nhsuk-grid-column-one-third sticky-nav">
+              <div className="article-section-nav-wrapper">
+                <div className="article-section-nav">
+                  <h2 className="article-section-nav__title">{post.title}</h2>
+                  <ArticleNavList
+                    headers={headings
+                      .filter(({ depth }) => depth <= level)
+                      .map(({ id, value }) => ({ id, title: value }))}
+                  ></ArticleNavList>
                 </div>
               </div>
-              <div
-                className="nhsuk-grid-column-two-thirds article-content"
-                dangerouslySetInnerHTML={{ __html: content }}
-              ></div>
             </div>
+            <div
+              className="nhsuk-grid-column-two-thirds article-content"
+              dangerouslySetInnerHTML={{ __html: content }}
+            ></div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
       {/* <script type="text/javascript">
           window.level = {{ level }}
       </script> */}
-      {/* <script src={{ "/js/header-marker.js" | url }}></script> */}
       {/* // {% include "footer.njk" %} */}
     </div>
   );
