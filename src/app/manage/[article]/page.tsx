@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import markdownToHtml from '@/lib/markdownToHtml';
 import { getAllArticles, getArticleContent } from '@/lib/api';
-import ArticleNavList from './nav-list';
+import ArticleNavList from '@/app/_components/nav-list';
 
 const level = 2;
 

@@ -30,10 +30,11 @@ type Article = {
   title: string;
   subtitle: string;
   pageName: string;
-  type: 'article';
+  type: 'article' | 'hub';
   hub: string;
   position: number;
   layout: string;
   content: string;
   slug: string;
+  name: string;
 };
