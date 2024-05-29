@@ -30,7 +30,7 @@ export default async function Article({ params }: Params) {
                       <ol className="article-section-nav__list">
                         {headings
                           .filter(({ depth }) => depth <= level)
-                          .map(({ value: headingTitle, data: { id } }) => (
+                          .map(({ value: headingTitle,  id  }) => (
                             <li key={id}>
                               <a
                                 href={'#' + id}

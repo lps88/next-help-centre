@@ -1,20 +1,22 @@
-import html from 'remark-html';
 import remarkParse from 'remark-parse';
-import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
-import remarkHeadings from '@vcarl/remark-headings';
-import remarkHeaderId from 'remark-heading-id';
+import remarkRehype from 'remark-rehype';
+import rehypeRaw from 'rehype-raw';
+import rehypeStringify from 'rehype-stringify';
+import rehypeSlug from 'rehype-slug';
+import rehypeHeadings from './rehype-headings';
 
 export default async function markdownToHtml(markdown: string) {
   const vfile = await unified()
-    .use(remarkParse, { clobberPrefix: '' })
-    .use(remarkStringify)
-    .use(remarkHeaderId, { defaults: true })
-    .use(remarkHeadings)
-    .use(html)
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeSlug)
+    .use(rehypeHeadings)
+    .use(rehypeStringify)
     .process(markdown);
   return { headings: vfile.data.headings, htmlString: vfile.value } as {
-    headings: Array<{ depth: number; value: string; data: { id: string } }>;
+    headings: Array<{ depth: number; value: string; id: string }>;
     htmlString: string;
   };
 }
