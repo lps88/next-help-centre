@@ -1,6 +1,7 @@
-import 'nhsuk-frontend/dist/nhsuk.css';
+import { getAllHubs } from '@/lib/api';
 
 export default function Home() {
+  const hubs = getAllHubs();
   return (
     <div>
       <header className="nhsuk-header" role="banner">
@@ -134,36 +135,39 @@ export default function Home() {
           <div className="nhsuk-grid-row">
             <div className="nhsuk-grid-column-full">
               <div className="nhsuk-grid-row nhsuk-panel-group nhsuk-u-margin-bottom-0">
-                <div className="nhsuk-grid-column-one-half nhsuk-panel-group__item nhsuk-u-margin-0">
-                  <div className="nhsuk-promo nhsuk-u-margin-bottom-5">
-                    <a className="nhsuk-promo__link-wrapper" href="{{ page.url | url }}">
-                      <div className="nhsuk-promo__content">
-                        <h2 className="nhsuk-promo__heading"></h2>
-                        <p className="nhsuk-promo__description"></p>
-                        <svg
-                          className="nhsuk-icon nhsuk-icon nhsuk-icon__chevron-right-circle"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="27"
-                          height="27"
-                          aria-hidden="true"
-                          focusable="false"
-                        >
-                          <circle cx="13.333" cy="13.333" r="13.333" fill="#005eb8" />
-                          <g
-                            fill="none"
-                            stroke="#fff"
-                            strokeLinecap="round"
-                            strokeMiterlimit="10"
-                            strokeWidth="2.667"
+                {hubs.map((hub) => (
+                  <div className="nhsuk-grid-column-one-half nhsuk-panel-group__item nhsuk-u-margin-0">
+                    <div className="nhsuk-promo nhsuk-u-margin-bottom-5">
+                      <a className="nhsuk-promo__link-wrapper" href={'/' + hub.name}>
+                        <div className="nhsuk-promo__content">
+                          <h2 className="nhsuk-promo__heading">{hub.title}</h2>
+                          <p className="nhsuk-promo__description">{hub.subtitle}</p>
+                          <svg
+                            className="nhsuk-icon nhsuk-icon nhsuk-icon__chevron-right-circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="27"
+                            height="27"
+                            aria-hidden="true"
+                            focusable="false"
                           >
-                            <path d="M15.438 13l-3.771 3.771" />
-                            <path data-name="Path" d="M11.667 9.229L15.438 13" />
-                          </g>
-                        </svg>
-                      </div>
-                    </a>
+                            <circle cx="13.333" cy="13.333" r="13.333" fill="#005eb8" />
+                            <g
+                              data-name="Group 1"
+                              fill="none"
+                              stroke="#fff"
+                              stroke-linecap="round"
+                              stroke-miterlimit="10"
+                              stroke-width="2.667"
+                            >
+                              <path d="M15.438 13l-3.771 3.771" />
+                              <path data-name="Path" d="M11.667 9.229L15.438 13" />
+                            </g>
+                          </svg>
+                        </div>
+                      </a>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
