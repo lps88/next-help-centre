@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
 import markdownToHtml from '@/lib/markdownToHtml';
-import { getAllArticles, getArticleContent } from '@/lib/api';
+import { getAllArticles, getContent } from '@/lib/api';
 import ArticleNavList from '@/app/_components/nav-list';
 
 const level = 2;
 
 export default async function Article({ params }: Params) {
-  const post = getArticleContent('src/manage', params.article);
+  const post = getContent(params.hub + '/' + params.article);
 
   if (!post) {
     return notFound();
@@ -50,12 +50,13 @@ export default async function Article({ params }: Params) {
 
 type Params = {
   params: {
+    hub: string;
     article: string;
   };
 };
 
 export function generateMetadata({ params }: Params) {
-  const post = getArticleContent('src/manage', params.article);
+  const post = getContent(params.hub + '/' + params.article);
 
   if (!post) {
     return notFound();
@@ -67,8 +68,11 @@ export function generateMetadata({ params }: Params) {
 }
 
 export async function generateStaticParams() {
-  const articles = getAllArticles('src/manage');
-  return articles.map((post) => ({
-    article: post.slug,
-  }));
+  const articles = getAllArticles();
+  return articles
+    .filter((post) => post.type === 'article')
+    .map((post) => ({
+      hub: post.slug.split('/')[0],
+      article: post.slug.split('/')[1],
+    }));
 }
