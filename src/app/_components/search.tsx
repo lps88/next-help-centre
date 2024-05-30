@@ -1,13 +1,20 @@
 'use client';
 import Fuse from 'fuse.js';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
 export default function SearchResult({ searchData }: Props) {
   const fuse = new Fuse(searchData, { keys: ['content', 'value'] });
 
+  const [searchTerm, setSearchTerm] = useState(useSearchParams().get('q') as string);
+
   const results = fuse
-    .search('email') // todo search strings
+    .search(searchTerm)
     .map((result) => result.item as { value: string; content: string; id: string; slug: string });
 
+  function handleChange(e) {
+    setSearchTerm(e.target.value);
+  }
   return (
     <div className="nhsuk-grid-column-three-quarters">
       <h1 id="title">Search</h1>
@@ -20,8 +27,8 @@ export default function SearchResult({ searchData }: Props) {
             className="app-search__input"
             name="q"
             type="search"
-            value="email"
-            onChange={() => {}}
+            value={searchTerm}
+            onChange={handleChange}
             autoComplete="off"
             id="search_input"
             pattern="^[a-zA-Z0-9\s]{3,}$"
