@@ -28,6 +28,10 @@ export default async function Article({ params }: Params) {
                   <ArticleNavList
                     headers={headings
                       .filter(({ depth }) => depth <= level)
+                      .filter(
+                        ({ className }) =>
+                          !className || className.indexOf('nhsuk-u-visually-hidden') === -1
+                      )
                       .map(({ id, value }) => ({ id, title: value }))}
                   ></ArticleNavList>
                 </div>

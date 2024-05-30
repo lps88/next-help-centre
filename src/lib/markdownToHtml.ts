@@ -16,7 +16,7 @@ export default async function markdownToHtml(markdown: string) {
     .use(rehypeStringify)
     .process(markdown);
   return { headings: vfile.data.headings, htmlString: vfile.value } as {
-    headings: Array<{ depth: number; value: string; id: string }>;
+    headings: Array<{ depth: number; value: string; id: string; className: string }>;
     htmlString: string;
   };
 }
