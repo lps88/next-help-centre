@@ -4,16 +4,17 @@ import { join } from 'path';
 
 const srcDirectory = join(process.cwd(), '/src');
 
-export function getFilesFrom(directory: string) {
-  return fs.readdirSync(directory).filter((fileName) => fileName && fileName.endsWith('.md'));
+export function getAllFiles() {
+  const files = fs.readdirSync(srcDirectory, { recursive: true });
+  return files.filter((fileName) => fileName && fileName.toString().endsWith('.md')) as string[];
 }
 
-export function getAllFiles() {
-  const directories = fs.readdirSync(srcDirectory);
-  return directories
-    .map((d) => fs.readdirSync(srcDirectory + '/' + d).map((file) => d + '/' + file))
-    .flat(1)
-    .filter((fileName) => fileName && fileName.endsWith('.md'));
+export function getContentOrIndex(slug: string) {
+  const topLevel = fs.readdirSync(srcDirectory);
+  if (topLevel.includes(slug + '.md')) {
+    return getContent(slug);
+  }
+  return getContent(slug + '/index');
 }
 
 export function getContent(slug: string) {
@@ -23,10 +24,10 @@ export function getContent(slug: string) {
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(fileContents);
 
-  return { ...data, slug: realSlug, content } as Document;
+  return { ...data, slug: realSlug, content } as MarkdownDocument;
 }
 
-export function getAllArticles(): Document[] {
+export function getAllArticles(): MarkdownDocument[] {
   const documents = getAllFiles();
   const articles = documents
     .map((slug) => getContent(slug))
@@ -34,16 +35,24 @@ export function getAllArticles(): Document[] {
   return articles;
 }
 
-export function getAllHubs(): Document[] {
+export function getAllHubs(): MarkdownDocument[] {
   const documents = getAllFiles();
   const hubs = documents
     .map((slug) => getContent(slug))
-    .filter((doc) => doc.type === 'hub')
+    .filter((doc) => doc.type === 'hub' || doc.slug.indexOf('/') === -1)
     .sort((hub1, hub2) => (hub1.position > hub2.position ? -1 : 1));
   return hubs;
 }
 
-type Document = {
+export function getHomePageLinks(): MarkdownDocument[] {
+  const documents = getAllFiles();
+  return documents
+    .map((slug) => getContent(slug))
+    .filter((a) => a.hub === 'home')
+    .sort((a1, a2) => (a1.position > a2.position ? 1 : -1));
+}
+
+export type MarkdownDocument = {
   title: string;
   subtitle: string;
   pageName: string;
