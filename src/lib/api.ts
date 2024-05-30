@@ -22,9 +22,9 @@ export function getContent(slug: string) {
   const fullPath = join(srcDirectory, `${realSlug}.md`);
 
   const fileContents = fs.readFileSync(fullPath, 'utf8');
-  const { data, content } = matter(fileContents);
+  const { data, content: markdownContent } = matter(fileContents);
 
-  return { ...data, slug: realSlug, content } as MarkdownDocument;
+  return { ...data, slug: realSlug, markdownContent } as MarkdownDocument;
 }
 
 export function getAllArticles(): MarkdownDocument[] {
@@ -60,7 +60,7 @@ export type MarkdownDocument = {
   hub: string;
   position: number;
   layout: string;
-  content: string;
+  markdownContent: string;
   slug: string;
   name: string;
 };

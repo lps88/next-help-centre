@@ -1,5 +1,7 @@
 import { visit } from 'unist-util-visit';
 import { toString } from 'mdast-util-to-string';
+import { heading } from 'hast-util-heading';
+
 // based on https://github.com/kazushisan/rehype-mdx-headings
 //@ts-ignore
 export const headings = (root) => {
@@ -24,22 +26,23 @@ export const headings = (root) => {
   return headingList;
 };
 
-const test = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tagName) => ({
-  type: 'element',
-  tagName,
-}));
-
 export default function rehypeHeadings() {
   //@ts-ignore
   return (ast, file) => {
-    const headings: Array<{ depth: number; value: string; data: { id: string } }> = [];
-    visit(ast, test, (node) => {
-      const value = toString(node);
-      const depth = parseInt(node.tagName.slice(1, 2), 10);
-      if (!value || isNaN(depth)) {
-        return;
+    const headings: Array<{ depth: number; value: string; content: string; data: { id: string } }> =
+      [];
+    visit(ast, (node) => {
+      if (heading(node)) {
+        const value = toString(node);
+        const depth = parseInt(node.tagName.slice(1, 2), 10);
+        if (!value || isNaN(depth)) {
+          return;
+        }
+        headings.push({ depth, value, content: value, ...node.properties } as any);
+      } else if (headings.length) {
+        headings[headings.length - 1].content =
+          headings[headings.length - 1].content + ' ' + toString(node);
       }
-      headings.push({ value, depth, ...node.properties });
     });
     file.data.headings = headings;
   };

@@ -5,7 +5,7 @@ import markdownToHtml from '@/lib/markdownToHtml';
 const level = 2;
 
 export default async function Article({ post }: Props) {
-  const { htmlString: content, headings } = await markdownToHtml(post.content || '');
+  const { htmlString: content, headings } = await markdownToHtml(post.markdownContent || '');
 
   return (
     <div className="nhsuk-width-container">
