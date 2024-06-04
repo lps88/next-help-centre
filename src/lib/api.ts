@@ -55,6 +55,7 @@ export function getHomePageLinks(): MarkdownDocument[] {
 export type MarkdownDocument = {
   title: string;
   subtitle: string;
+  short_title: string;
   pageName: string;
   type: 'article' | 'hub';
   hub: string;

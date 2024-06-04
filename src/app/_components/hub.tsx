@@ -1,9 +1,10 @@
 import { MarkdownDocument } from '@/lib/api';
+import Header from './header';
 
 export default async function Hub({ title, articles }: Props) {
   return (
-    <div className="nhsuk-width-container">
-      {/* {% include "header.njk" %} */}
+    <span>
+      <Header></Header>
       <div className="nhsuk-width-container">
         <main className="nhsuk-main-wrapper" id="maincontent" role="main">
           <div className="nhsuk-grid-row">
@@ -35,7 +36,7 @@ export default async function Hub({ title, articles }: Props) {
         </main>
       </div>
       {/* // {% include "footer.njk" %} */}
-    </div>
+    </span>
   );
 }
 
