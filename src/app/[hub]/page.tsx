@@ -8,7 +8,7 @@ export default async function Page({ params }: Params) {
 
   if (post?.type === 'hub') {
     const articles = getAllArticles().filter((a) => a.hub === params.hub);
-    return <Hub title={post.title} articles={articles}></Hub>;
+    return <Hub hub={post} articles={articles}></Hub>;
   } else if (post?.type === 'article') {
     return <Article post={post}></Article>;
   }

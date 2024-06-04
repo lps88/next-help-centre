@@ -2,6 +2,7 @@ import ArticleNavList from '@/app/_components/nav-list';
 import { MarkdownDocument } from '@/lib/api';
 import markdownToHtml from '@/lib/markdownToHtml';
 import Header from './header';
+import Breadcrumbs from './breadcrumbs';
 
 const level = 2;
 
@@ -14,7 +15,7 @@ export default async function Article({ post }: Props) {
       <div className="nhsuk-width-container">
         <main className="nhsuk-main-wrapper " id="maincontent" role="main">
           <div className="nhsuk-width-container">
-            {/* {% include "breadcrumbs.njk" %} */}
+            <Breadcrumbs post={post}></Breadcrumbs>
             <div className="nhsuk-grid-row">
               <div className="nhsuk-grid-column-one-third sticky-nav">
                 <div className="article-section-nav-wrapper">

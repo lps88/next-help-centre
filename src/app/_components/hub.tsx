@@ -1,7 +1,8 @@
 import { MarkdownDocument } from '@/lib/api';
 import Header from './header';
+import Breadcrumbs from './breadcrumbs';
 
-export default async function Hub({ title, articles }: Props) {
+export default async function Hub({ hub, articles }: Props) {
   return (
     <span>
       <Header></Header>
@@ -9,8 +10,8 @@ export default async function Hub({ title, articles }: Props) {
         <main className="nhsuk-main-wrapper" id="maincontent" role="main">
           <div className="nhsuk-grid-row">
             <div className="nhsuk-grid-column-full">
-              {/* {% include "breadcrumbs.njk" %} */}
-              <h1>{title}</h1>
+              <Breadcrumbs post={hub}></Breadcrumbs>
+              <h1>{hub.title}</h1>
               <div className="nhsuk-grid-row nhsuk-panel-group nhsuk-u-margin-bottom-0">
                 {articles
                   .filter((article) => article.type === 'article')
@@ -41,6 +42,6 @@ export default async function Hub({ title, articles }: Props) {
 }
 
 type Props = {
-  title: string;
+  hub: MarkdownDocument;
   articles: MarkdownDocument[];
 };
