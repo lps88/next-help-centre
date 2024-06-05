@@ -4,7 +4,7 @@ import Breadcrumbs from './breadcrumbs';
 
 export default async function Hub({ hub, articles }: Props) {
   return (
-    <span>
+    <>
       <Header></Header>
       <div className="nhsuk-width-container">
         <main className="nhsuk-main-wrapper" id="maincontent" role="main">
@@ -36,8 +36,7 @@ export default async function Hub({ hub, articles }: Props) {
           </div>
         </main>
       </div>
-      {/* // {% include "footer.njk" %} */}
-    </span>
+    </>
   );
 }
 

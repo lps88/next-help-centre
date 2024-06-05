@@ -14,7 +14,7 @@ export default async function Search() {
       )
   );
   return (
-    <span>
+    <>
       {/* {% include "cookie-banner.njk" %} */}
       <Header></Header>
       <div className="nhsuk-width-container">
@@ -26,8 +26,7 @@ export default async function Search() {
         </main>
         {/* <script src={{ "/js/back-link.js" | url }}></script> */}
         {/* <script src={{ "/js/cookie-banner.js" | url }}></script> */}
-        {/* {% include "footer.njk" %} */}
       </div>
-    </span>
+    </>
   );
 }

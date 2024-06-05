@@ -10,7 +10,7 @@ export default async function Article({ post }: Props) {
   const { htmlString: content, headings } = await markdownToHtml(post.markdownContent || '');
 
   return (
-    <span>
+    <>
       <Header></Header>
       <div className="nhsuk-width-container">
         <main className="nhsuk-main-wrapper " id="maincontent" role="main">
@@ -44,8 +44,7 @@ export default async function Article({ post }: Props) {
       {/* <script type="text/javascript">
           window.level = {{ level }}
       </script> */}
-      {/* // {% include "footer.njk" %} */}
-    </span>
+    </>
   );
 }
 

@@ -6,18 +6,21 @@ import { useState } from 'react';
 export default function SearchResult({ searchData }: Props) {
   const fuse = new Fuse(searchData, { keys: ['content', 'value'] });
 
-  const [searchTerm, setSearchTerm] = useState(useSearchParams().get('q') as string);
+  const currentSearchTerm = useSearchParams().get('q') as string;
+
+  const [searchTerm, setSearchTerm] = useState(currentSearchTerm);
 
   const results = fuse
-    .search(searchTerm)
+    .search(currentSearchTerm)
     .map((result) => result.item as { value: string; content: string; id: string; slug: string });
 
-  function handleChange(e) {
+  function handleChange(e: { target: { value: string } }) {
     setSearchTerm(e.target.value);
   }
+
   return (
     <div className="nhsuk-grid-column-three-quarters">
-      <h1 id="title">Search</h1>
+      <h1 id="title">{currentSearchTerm ? 'Search results for ' + currentSearchTerm : 'Search'}</h1>
       <form id="search" action="/search" method="get" role="search">
         <div className="app-search__contents">
           <label className="nhsuk-u-visually-hidden" htmlFor="search-field">
@@ -49,22 +52,40 @@ export default function SearchResult({ searchData }: Props) {
         </div>
       </form>
       <div id="search_content">
-        <div>
-          Found <strong>{results.length}</strong> matching result{results.length > 1 ? 's' : ''}
-        </div>
-        <ul className="nhsuk-list nhsuk-list--border nhsuk-u-margin-top-3">
-          {results.map((result, index) => (
-            <li key={index}>
-              <h2 className="nhsuk-u-margin-bottom-1">
-                <a href={`/${result.slug.replace('/index', '')}#${result.id}`}>{result.value}</a>
-              </h2>
-              <p className="nhsuk-body-s nhsuk-u-margin-top-1">
-                {result.content?.substring(0, Math.max(result.content?.indexOf(' ', 120), 120))}
-                &#8230;
-              </p>
-            </li>
-          ))}
-        </ul>
+        {results.length ? (
+          <>
+            <div>
+              Found <strong>{results.length}</strong> matching result{results.length > 1 ? 's' : ''}
+            </div>
+            <ul className="nhsuk-list nhsuk-list--border nhsuk-u-margin-top-3">
+              {results.map((result, index) => (
+                <li key={index}>
+                  <h2 className="nhsuk-u-margin-bottom-1">
+                    <a href={`/${result.slug.replace('/index', '')}#${result.id}`}>
+                      {result.value}
+                    </a>
+                  </h2>
+                  <p className="nhsuk-body-s nhsuk-u-margin-top-1">
+                    {result.content?.substring(0, Math.max(result.content?.indexOf(' ', 120), 120))}
+                    &#8230;
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <>
+            <div className="nhsuk-grid-column-two-thirds">
+              <h2>No results found for {currentSearchTerm}</h2>
+              <p>Improve your search results by:</p>
+              <ul className="nhsuk-list nhsuk-list--bullet">
+                <li>double-checking your spelling</li>
+                <li>using fewer keywords</li>
+                <li>searching a reference number</li>
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
