@@ -17,14 +17,14 @@ export default function useCookie<Type>(
     } else {
       Cookies.set(name, JSON.stringify(defaultValue), options);
     }
-  }, []);
+  }, [name, defaultValue, options]);
 
   const updateCookie = useCallback(
     (newValue: Type) => {
       Cookies.set(name, JSON.stringify(newValue), options);
       setValue(newValue);
     },
-    [name]
+    [name, options]
   );
 
   return [value, updateCookie];

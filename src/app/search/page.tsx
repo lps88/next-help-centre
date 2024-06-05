@@ -2,6 +2,7 @@ import { getAllArticles } from '@/lib/api';
 import markdownToHtml from '@/lib/markdownToHtml';
 import SearchResult from '../_components/search';
 import Header from '../_components/header';
+import { Suspense } from 'react';
 
 export default async function Search() {
   const searchData = await Promise.all(
@@ -21,7 +22,9 @@ export default async function Search() {
         <main className="nhsuk-main-wrapper" role="main">
           {/* {% include "breadcrumbs.njk" %} */}
           <div className="nhsuk-grid-row">
-            <SearchResult searchData={searchData.flat()}></SearchResult>
+            <Suspense>
+              <SearchResult searchData={searchData.flat()}></SearchResult>
+            </Suspense>
           </div>
         </main>
         {/* <script src={{ "/js/back-link.js" | url }}></script> */}

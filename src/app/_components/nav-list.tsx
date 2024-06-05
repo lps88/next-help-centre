@@ -15,7 +15,7 @@ export type NavHeader = {
  */
 const nearestIndex = (
   currentPosition: number,
-  sectionPositionArray: Array<Element>,
+  sectionPositionArray: Array<HTMLElement>,
   startIndex: number,
   endIndex: number
 ): number => {
@@ -45,10 +45,8 @@ export default function ArticleNavList({ headers }: { headers: NavHeader[] }) {
     const handleResizeOrScroll = () => {
       const sectionSelector = headers.map((header) => '#' + header.id).join(',');
 
-      const elements = document.querySelectorAll(sectionSelector);
-      const sections = Array.from(elements)
-        .filter((e) => e.id)
-        .sort((a, b) => a.offsetTop - b.offsetTop);
+      const elements: HTMLElement[] = Array.from(document.querySelectorAll(sectionSelector));
+      const sections = elements.filter((e) => e.id).sort((a, b) => a.offsetTop - b.offsetTop);
       var index = nearestIndex(window.scrollY, sections, 0, headers.length - 1);
       setActiveIndex(index);
     };
@@ -58,7 +56,7 @@ export default function ArticleNavList({ headers }: { headers: NavHeader[] }) {
       window.removeEventListener('resize', handleResizeOrScroll);
       window.removeEventListener('scroll', handleResizeOrScroll);
     };
-  }, []);
+  }, [headers]);
 
   return (
     <nav>
