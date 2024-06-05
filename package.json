@@ -13,6 +13,7 @@
     "fuse.js": "^7.0.0",
     "gray-matter": "^4.0.3",
     "hast-util-heading": "^3.0.0",
+    "js-cookie": "^3.0.5",
     "next": "14.2.3",
     "nhsuk-frontend": "^8.1.1",
     "react": "^18",
@@ -24,6 +25,7 @@
     "remark-rehype": "^11.1.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -137,7 +137,10 @@ export default function Home() {
             <div className="nhsuk-grid-column-full">
               <div className="nhsuk-grid-row nhsuk-panel-group nhsuk-u-margin-bottom-0">
                 {hubs.map((hub) => (
-                  <div className="nhsuk-grid-column-one-half nhsuk-panel-group__item nhsuk-u-margin-0">
+                  <div
+                    className="nhsuk-grid-column-one-half nhsuk-panel-group__item nhsuk-u-margin-0"
+                    key={hub.slug}
+                  >
                     <div className="nhsuk-promo nhsuk-u-margin-bottom-5">
                       <a
                         className="nhsuk-promo__link-wrapper"
