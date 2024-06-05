@@ -43,6 +43,7 @@ export default function Home() {
                       <form
                         className="nhsuk-header__search-form nhsuk-hub__search-form"
                         id="search"
+                        action="/search"
                         method="get"
                         role="search"
                       >

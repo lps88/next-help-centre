@@ -12,7 +12,7 @@ export default async function Breadcrumbs({ post }: Props) {
 
   while (current.hub && breadcrumbs.length <= pages.length) {
     if (current.hub === 'home') {
-      breadcrumbs.unshift({ slug: '/', title: 'NHS login Help centre' });
+      breadcrumbs.unshift({ slug: '', title: 'NHS login Help centre' });
       break;
     }
     const next = pages.find((post) => post.name === current.hub);
@@ -32,7 +32,7 @@ export default async function Breadcrumbs({ post }: Props) {
       <ol className="nhsuk-breadcrumb__list">
         {breadcrumbs.map((link) => (
           <li className="nhsuk-breadcrumb__item" key={link.slug}>
-            <a className="nhsuk-breadcrumb__link" href={link.slug.replace('/index', '')}>
+            <a className="nhsuk-breadcrumb__link" href={'/' + link.slug.replace('/index', '')}>
               {link.title}
             </a>
           </li>

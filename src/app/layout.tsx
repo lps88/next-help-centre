@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.scss';
+import Footer from './_components/footer';
 
 export const metadata: Metadata = {
   title: 'NHS login Help Centre',
@@ -28,7 +29,10 @@ export default function RootLayout({
         <link rel="mask-icon" href="/images/favicons/favicon.svg" color="#005eb8" />
         <link rel="icon" sizes="192x192" href="/images/favicons/favicon-192x192.png" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Footer></Footer>
+      </body>
     </html>
   );
 }
